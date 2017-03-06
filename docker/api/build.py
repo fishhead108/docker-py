@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 import re
 
@@ -7,9 +6,7 @@ from .. import auth
 from .. import constants
 from .. import errors
 from .. import utils
-
-
-log = logging.getLogger(__name__)
+from docker.utils.logger import log
 
 
 class BuildApiMixin(object):

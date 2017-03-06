@@ -75,8 +75,7 @@ class DockerClient(object):
         """
         timeout = kwargs.pop('timeout', None)
         version = kwargs.pop('version', None)
-        loglevel = kwargs.pop('loglevel', None)
-        return cls(timeout=timeout, version=version, loglevel=loglevel,
+        return cls(timeout=timeout, version=version,
                    **kwargs_from_env(**kwargs))
 
     # Resources

@@ -1,13 +1,12 @@
-import logging
+#import logging
 import os
 import warnings
 
 import six
+from docker.utils.logger import *
 
 from .. import auth, errors, utils
 from ..constants import INSECURE_REGISTRY_DEPRECATION_WARNING
-
-log = logging.getLogger(__name__)
 
 
 class ImageApiMixin(object):

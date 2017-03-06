@@ -1,6 +1,5 @@
 import base64
 import json
-import logging
 import os
 
 import dockerpycreds
@@ -8,17 +7,13 @@ import six
 
 from . import errors
 from .constants import IS_WINDOWS_PLATFORM
+from docker.utils.logger import log
 
 INDEX_NAME = 'docker.io'
 INDEX_URL = 'https://{0}/v1/'.format(INDEX_NAME)
 DOCKER_CONFIG_FILENAME = os.path.join('.docker', 'config.json')
 LEGACY_DOCKER_CONFIG_FILENAME = '.dockercfg'
 TOKEN_USERNAME = '<token>'
-
-log = logging.getLogger(__name__)
-log.setLevel(level="ERROR")
-
-
 
 def resolve_repository_name(repo_name):
     if '://' in repo_name:
@@ -41,8 +36,6 @@ def resolve_index_name(index_name):
         index_name = INDEX_NAME
     return index_name
 
-def set_log_level(level):
-    log.setLevel(level=level)
 
 def get_config_header(client, registry):
 
