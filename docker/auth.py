@@ -16,6 +16,8 @@ LEGACY_DOCKER_CONFIG_FILENAME = '.dockercfg'
 TOKEN_USERNAME = '<token>'
 
 log = logging.getLogger(__name__)
+log.setLevel(level="ERROR")
+
 
 
 def resolve_repository_name(repo_name):
@@ -39,8 +41,11 @@ def resolve_index_name(index_name):
         index_name = INDEX_NAME
     return index_name
 
+def set_log_level(level):
+    log.setLevel(level=level)
 
 def get_config_header(client, registry):
+
     log.debug('Looking for auth config')
     if not client._auth_configs:
         log.debug(

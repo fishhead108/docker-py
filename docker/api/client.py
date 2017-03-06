@@ -23,7 +23,7 @@ from .. import auth
 from ..constants import (
     DEFAULT_TIMEOUT_SECONDS, DEFAULT_USER_AGENT, IS_WINDOWS_PLATFORM,
     DEFAULT_DOCKER_API_VERSION, STREAM_HEADER_SIZE_BYTES, DEFAULT_NUM_POOLS,
-    MINIMUM_DOCKER_API_VERSION
+    MINIMUM_DOCKER_API_VERSION, DEFAULT_DOCKER_LOG_LEVEL
 )
 from ..errors import (
     DockerException, TLSParameterError,
@@ -83,7 +83,7 @@ class APIClient(
             configuration.
         user_agent (str): Set a custom user agent for requests to the server.
     """
-    def __init__(self, base_url=None, version=None,
+    def __init__(self, base_url=None, version=None, loglevel=None,
                  timeout=DEFAULT_TIMEOUT_SECONDS, tls=False,
                  user_agent=DEFAULT_USER_AGENT, num_pools=DEFAULT_NUM_POOLS):
         super(APIClient, self).__init__()
@@ -147,6 +147,19 @@ class APIClient(
                     type(version).__name__
                 )
             )
+
+
+        if loglevel is None:
+            self._loglevel = DEFAULT_DOCKER_LOG_LEVEL
+        elif isinstance(loglevel, six.string_types):
+            self._loglevel = auth.set_log_level(loglevel)
+        else:
+            raise DockerException(
+                'Version parameter must be a string or None. Found {0}'.format(
+                    type(loglevel).__name__
+                )
+            )
+
         if utils.version_lt(self._version, MINIMUM_DOCKER_API_VERSION):
             warnings.warn(
                 'The minimum API version supported is {}, but you are using '
