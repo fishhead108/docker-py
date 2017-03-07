@@ -6,7 +6,7 @@ from .. import auth
 from .. import constants
 from .. import errors
 from .. import utils
-from docker.utils.logger import log
+from ..utils.logger import log
 
 
 class BuildApiMixin(object):

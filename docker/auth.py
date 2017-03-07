@@ -15,6 +15,7 @@ DOCKER_CONFIG_FILENAME = os.path.join('.docker', 'config.json')
 LEGACY_DOCKER_CONFIG_FILENAME = '.dockercfg'
 TOKEN_USERNAME = '<token>'
 
+
 def resolve_repository_name(repo_name):
     if '://' in repo_name:
         raise errors.InvalidRepository(
@@ -38,7 +39,6 @@ def resolve_index_name(index_name):
 
 
 def get_config_header(client, registry):
-
     log.debug('Looking for auth config')
     if not client._auth_configs:
         log.debug(
@@ -61,7 +61,7 @@ def get_config_header(client, registry):
 def split_repo_name(repo_name):
     parts = repo_name.split('/', 1)
     if len(parts) == 1 or (
-        '.' not in parts[0] and ':' not in parts[0] and parts[0] != 'localhost'
+                    '.' not in parts[0] and ':' not in parts[0] and parts[0] != 'localhost'
     ):
         # This is a docker index repo (ex: username/foobar or ubuntu)
         return INDEX_NAME, repo_name
@@ -196,7 +196,7 @@ def parse_auth(entries, raise_on_error=False):
         username, password = decode_auth(entry['auth'])
         log.debug(
             'Found entry (registry={0}, username={1})'
-            .format(repr(registry), repr(username))
+                .format(repr(registry), repr(username))
         )
 
         conf[registry] = {

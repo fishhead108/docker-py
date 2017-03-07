@@ -23,7 +23,7 @@ from .. import auth
 from ..constants import (
     DEFAULT_TIMEOUT_SECONDS, DEFAULT_USER_AGENT, IS_WINDOWS_PLATFORM,
     DEFAULT_DOCKER_API_VERSION, STREAM_HEADER_SIZE_BYTES, DEFAULT_NUM_POOLS,
-    MINIMUM_DOCKER_API_VERSION, DEFAULT_DOCKER_LOG_LEVEL
+    MINIMUM_DOCKER_API_VERSION
 )
 from ..errors import (
     DockerException, TLSParameterError,
@@ -34,6 +34,8 @@ from ..transport import SSLAdapter, UnixAdapter
 from ..utils import utils, check_resource, update_headers
 from ..utils.socket import frames_iter
 from ..utils.json_stream import json_stream
+from docker.utils.logger import DEFAULT_DOCKER_LOG_LEVEL, log, urlliblog, set_docker_log_level
+
 try:
     from ..transport import NpipeAdapter
 except ImportError:
@@ -41,18 +43,18 @@ except ImportError:
 
 
 class APIClient(
-        requests.Session,
-        BuildApiMixin,
-        ContainerApiMixin,
-        DaemonApiMixin,
-        ExecApiMixin,
-        ImageApiMixin,
-        NetworkApiMixin,
-        PluginApiMixin,
-        SecretApiMixin,
-        ServiceApiMixin,
-        SwarmApiMixin,
-        VolumeApiMixin):
+    requests.Session,
+    BuildApiMixin,
+    ContainerApiMixin,
+    DaemonApiMixin,
+    ExecApiMixin,
+    ImageApiMixin,
+    NetworkApiMixin,
+    PluginApiMixin,
+    SecretApiMixin,
+    ServiceApiMixin,
+    SwarmApiMixin,
+    VolumeApiMixin):
     """
     A low-level client for the Docker Engine API.
 
@@ -83,10 +85,22 @@ class APIClient(
             configuration.
         user_agent (str): Set a custom user agent for requests to the server.
     """
+
     def __init__(self, base_url=None, version=None, loglevel=None,
                  timeout=DEFAULT_TIMEOUT_SECONDS, tls=False,
                  user_agent=DEFAULT_USER_AGENT, num_pools=DEFAULT_NUM_POOLS):
         super(APIClient, self).__init__()
+
+        if loglevel is None:
+            set_docker_log_level(DEFAULT_DOCKER_LOG_LEVEL)
+        elif isinstance(loglevel, six.string_types):
+            set_docker_log_level(loglevel)
+        else:
+            raise DockerException(
+                'Version parameter must be a string or None. Found {0}'.format(
+                    type(loglevel).__name__
+                )
+            )
 
         if tls and not base_url:
             raise TLSParameterError(
@@ -145,18 +159,6 @@ class APIClient(
             raise DockerException(
                 'Version parameter must be a string or None. Found {0}'.format(
                     type(version).__name__
-                )
-            )
-
-
-        if loglevel is None:
-            self._loglevel = DEFAULT_DOCKER_LOG_LEVEL
-        elif isinstance(loglevel, six.string_types):
-            self._loglevel = auth.set_log_level(loglevel)
-        else:
-            raise DockerException(
-                'Version parameter must be a string or None. Found {0}'.format(
-                    type(loglevel).__name__
                 )
             )
 

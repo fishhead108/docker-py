@@ -32,6 +32,7 @@ class DockerClient(object):
             configuration.
         user_agent (str): Set a custom user agent for requests to the server.
     """
+
     def __init__(self, *args, **kwargs):
         self.api = APIClient(*args, **kwargs)
 
@@ -75,7 +76,8 @@ class DockerClient(object):
         """
         timeout = kwargs.pop('timeout', None)
         version = kwargs.pop('version', None)
-        return cls(timeout=timeout, version=version,
+        loglevel = kwargs.pop('loglevel', None)
+        return cls(timeout=timeout, version=version, loglevel=loglevel,
                    **kwargs_from_env(**kwargs))
 
     # Resources
@@ -153,22 +155,27 @@ class DockerClient(object):
     # Top-level methods
     def events(self, *args, **kwargs):
         return self.api.events(*args, **kwargs)
+
     events.__doc__ = APIClient.events.__doc__
 
     def info(self, *args, **kwargs):
         return self.api.info(*args, **kwargs)
+
     info.__doc__ = APIClient.info.__doc__
 
     def login(self, *args, **kwargs):
         return self.api.login(*args, **kwargs)
+
     login.__doc__ = APIClient.login.__doc__
 
     def ping(self, *args, **kwargs):
         return self.api.ping(*args, **kwargs)
+
     ping.__doc__ = APIClient.ping.__doc__
 
     def version(self, *args, **kwargs):
         return self.api.version(*args, **kwargs)
+
     version.__doc__ = APIClient.version.__doc__
 
     def __getattr__(self, name):
