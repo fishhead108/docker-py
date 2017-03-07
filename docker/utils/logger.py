@@ -31,14 +31,11 @@ def set_docker_log_level(level):
     log.setLevel(level=level)
     urlliblog.setLevel(level=level)
 
-if not len(log.handlers):
-    now = datetime.datetime.now()
-    handler = logging.StreamHandler()
-    formatter = logging.Formatter("%(filename)-25s[Line:%(lineno)d] %(levelname)-10s[%(asctime)s] %(message)s")
-    handler.setFormatter(formatter)
-
-    urlliblog.addHandler(handler)
-    log.addHandler(handler)
-
-    log.propagate = False
-    urlliblog.propagate = False
+now = datetime.datetime.now() # set time
+handler = logging.StreamHandler()
+formatter = logging.Formatter("%(filename)-25s[Line:%(lineno)d] %(levelname)-10s[%(asctime)s] %(message)s")
+handler.setFormatter(formatter)
+urlliblog.addHandler(handler)
+log.addHandler(handler)
+log.propagate = False
+urlliblog.propagate = False
