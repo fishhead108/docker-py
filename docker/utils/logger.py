@@ -24,7 +24,7 @@ DEFAULT_DOCKER_LOG_LEVEL = 'DEBUG'
 
 # Initialize Logger's:
 urlliblog = logging.getLogger('requests.packages.urllib3.connectionpool')
-log = logging.getLogger("ProvisioningPython")
+log = logging.getLogger("DockerLogger")
 
 # Helper function for defining logging level
 def set_docker_log_level(level):

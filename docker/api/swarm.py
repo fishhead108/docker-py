@@ -1,7 +1,8 @@
+import logging
 from six.moves import http_client
 from .. import types
 from .. import utils
-from docker.utils.logger import log
+log = logging.getLogger("DockerLogger")
 
 
 class SwarmApiMixin(object):
